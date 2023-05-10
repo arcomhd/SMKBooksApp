@@ -76,6 +76,8 @@ public class FetchBook extends AsyncTask<String, Void, String> {
             JSONArray booksArray=jsonObject.getJSONArray("items");
             String title=null;
             String authors=null;
+            String image=null;
+            String desc=null;
             int i=0;
             while (i<booksArray.length()){
                 JSONObject book=booksArray.getJSONObject(i);
@@ -87,9 +89,22 @@ public class FetchBook extends AsyncTask<String, Void, String> {
                     }else {
                         authors="";
                     }
+                    if(volumeInfo.has("description")){
+                        desc=volumeInfo.getString("description");
+                    }else {
+                        desc="";
+                    }
+                    if(volumeInfo.has("imageLinks")){
+                        image=volumeInfo.getJSONObject("imageLinks")
+                                .getString("thumbnail");
+                    }else {
+                        image="";
+                    }
                     BookData bookData=new BookData();
                     bookData.bookTitle=title;
                     bookData.bookAuthor=authors;
+                    bookData.bookDescription=desc;
+                    bookData.bookImage=image;
                     values.add(bookData);
                 }catch (Exception e) {
                     e.printStackTrace();
